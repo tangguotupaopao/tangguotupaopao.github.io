@@ -86,7 +86,7 @@ PC机上手动使用文件管理器将测试文件放">
     </p>
   <p class="article-time">
     <time datetime="2019-04-11T02:52:40.000Z" itemprop="datePublished">2019-04-11</time>
-    Updated:<time datetime="2019-04-11T04:06:41.286Z" itemprop="dateModified">2019-04-11</time>
+    Updated:<time datetime="2019-04-11T04:13:38.612Z" itemprop="dateModified">2019-04-11</time>
     
   </p>
 </header>
@@ -120,36 +120,28 @@ PC机上手动使用文件管理器将测试文件放">
 <li>路径太长了，操作一次找半天。如果碰到无法自动刷新，必须重启才能显示最新结果文件的管理器，测一次感觉会疯。</li>
 </ul>
 <h2 id="解决思路2：使用SAF操作文件"><a href="#解决思路2：使用SAF操作文件" class="headerlink" title="解决思路2：使用SAF操作文件"></a>解决思路2：使用SAF操作文件</h2><p>Android很早就提供了<a href="https://developer.android.com/guide/topics/providers/document-provider?hl=zh-cn" target="_blank" rel="noopener">存储访问框架</a>，不过因为一直有方法很方便任意访问SDcard，应该很少有使用这个框架的。这个框架接管了对存储卡的读写，通过唤起系统提供的UI界面让用户自己而非应用程序来查看、生成并选择文件，而应用程序只能通过回调获得文件URI并访问。</p>
-<ul>
-<li><p>方案优点：</p>
+<p><strong>方案优点：</strong></p>
 <ul>
 <li>可继续将测试文件放在SDcard根目录、结果文件保存在根目录。</li>
 </ul>
-</li>
-<li><p>方案缺陷：</p>
+<p><strong>方案缺陷：</strong></p>
 <ul>
 <li>平白多了很多界面交互操作。而且没有更改系统UI的地方，想在弹出系统界面的地方添加操作提示都不行。</li>
 <li>无法直接定位or特别展示指定文件，需要滑动界面、甚至点击切换TAB自己找。</li>
 <li>在生成结果文件的时候，如果简单地使用SAF提供的生成方法，则会在已有结果文件的时候，自动在文件名后加(1)(2)(3)这种标记，没法设定覆盖已有结果文件，而这和之前的行为不一致(原本是覆盖原有文件)，容易产生迷惑。但现在因为无法随意访问SDcard，SAF也没有提供相关方法，没有办法可以判断文件是否已存在，除非再增加一堆交互。</li>
 </ul>
-</li>
-</ul>
 <h2 id="解决思路3：利用SAF获取到的URI"><a href="#解决思路3：利用SAF获取到的URI" class="headerlink" title="解决思路3：利用SAF获取到的URI"></a>解决思路3：利用SAF获取到的URI</h2><p>利用SAF读取文件，实质上是操作与绝对路径无关的文件URI，而这个URI只能在用户在系统SAF的UI中操作回调后才能获得。然而使用Pixel上测试，这个返回的URI还是有些规律的。”sdcard/A.txt”返回的URI为content://com.android.externalstorage.documents/document/primary%3AA.txt。也就是SDcard根路径的URI为content://com.android.externalstorage.documents/document/primary%3A。经测试，直接将需要的文件名接在此SDcard根路径后面，并正确构造Uri，可无需系统UI，直接访问SDcard根路径下的文件。构造Uri示例如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Uri uri = <span class="keyword">new</span> Uri.Builder().scheme(<span class="string">"content"</span>).authority(<span class="string">"com.android.externalstorage.documents"</span>).path(<span class="string">"document/primary:A.txt"</span>).build();</span><br></pre></td></tr></table></figure>
 <p>使用URI获取文件代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">InputStream fileStream = getContentResolver().openInputStream(uri);</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>方案优点：</p>
+<p><strong>方案优点：</strong></p>
 <ul>
 <li>代码改动小，可继续将测试文件放置在SDcard根目录。</li>
 </ul>
-</li>
-<li><p>方案缺点：</p>
+<p><strong>方案缺点：</strong></p>
 <ul>
 <li>使用硬编码URI，这个值非常可能随机型或相关安全策略而变化。</li>
 <li>无法处理需要生成新文件的情况。有文件才有Uri，没有文件光有Uri没用。</li>
-</ul>
-</li>
 </ul>
 <h2 id="解决思路4：使用SAF文件树"><a href="#解决思路4：使用SAF文件树" class="headerlink" title="解决思路4：使用SAF文件树"></a>解决思路4：使用SAF文件树</h2><p>自Android5.0开始，系统提供了通过SAF获取整个文件夹读写权限的方法。这种方法虽然还是需要拉起系统UI，但获得权限后，就可以无界面读写文件了，减少了很多交互。拉起系统UI打开文件树方法：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);</span><br><span class="line">startActivityForResult(intent, TREE_REQUEST_CODE);</span><br></pre></td></tr></table></figure>
@@ -158,36 +150,28 @@ PC机上手动使用文件管理器将测试文件放">
 <p>然后获取对应此目录的DocumentFile，之后即可通过DocumentFile操作文件：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DocumentFile root = DocumentFile.fromTreeUri(<span class="keyword">this</span>, uri);</span><br></pre></td></tr></table></figure>
 <p>获得目录DocumentFile后，可以保存，下次就不需要再弹界面了。同时可以在拉起系统UI前做好权限授予提示。</p>
-<ul>
-<li><p>方案优点：</p>
+<p><strong>方案优点：</strong></p>
 <ul>
 <li>可以继续在SDcard根目录操作文件。</li>
 <li>交互比之前的方法少很多。</li>
 </ul>
-</li>
-<li><p>方案缺点：</p>
+<p><strong>方案缺点：</strong></p>
 <ul>
 <li>需要做好提示工作。</li>
 <li>不同机型对这个功能的支持可能不同。比如在Pixel2上可以正常访问SDcard，但华为mate9上就无法访问。</li>
 </ul>
-</li>
-</ul>
 <h2 id="解决思路5：使用媒体库"><a href="#解决思路5：使用媒体库" class="headerlink" title="解决思路5：使用媒体库"></a>解决思路5：使用媒体库</h2><p>AndroidQ推荐使用媒体库进行文件共享。然而对于当前场景，媒体库主要的问题是：可以读取的文件必须用代码指定加入媒体库。未如此操作，经测试，哪怕手动将文件放入媒体库文件夹，重启强制刷新媒体库，也无法在媒体库找到此文件。</p>
 <p>如果手动添加文件不行，那么如果先在媒体库生成空白测试文件，然后再手动替换成手机外生成的同名测试文件是否可以呢？经测试，生成空白文件后，直接替换，可成功通过媒体库读到新的内容。但如果先删除再替换，则就无法再读到此文件。</p>
-<ul>
-<li><p>方案优点：</p>
+<p><strong>方案优点：</strong></p>
 <ul>
 <li>交互操作少。</li>
 <li>文件操作路径相对短（Pixel2测试为SDcard/Download）。</li>
 </ul>
-</li>
-<li><p>方案缺点：</p>
+<p><strong>方案缺点：</strong></p>
 <ul>
 <li>虽然路径短，但还是无法在SDcard根目录操作文件。</li>
 <li>如果误删除测试文件，就比较麻烦。</li>
 <li>没有打印媒体库路径的API。在Pixel2上手动搜索找到了生成的文件在SDcard/Download，并不代表所有手机都是这个路径。其实就是文件路径无法确定。</li>
-</ul>
-</li>
 </ul>
 <p>最终使用了思路4，相对来说更加简洁通用。</p>
   
