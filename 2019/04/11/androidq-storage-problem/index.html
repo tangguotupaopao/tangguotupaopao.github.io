@@ -12,11 +12,12 @@
     
     <meta name="author" content="糖果吐泡泡">
     
-    <meta name="description" content="问题描述AndroidQ限制应用只能访问自己私有存储空间和其他应用设置为共享的文件。在之前的版本，国内手机的SDcard还是处在可以随意访问的状态。因此我遇到了如下问题：
+    <meta name="description" content="##问题描述
+AndroidQ限制应用只能访问自己私有存储空间和其他应用设置为共享的文件。在之前的版本，国内手机的SDcard还是处在可以随意访问的状态。因此我遇到了如下问题：
 我维护的模块需要支持非开发人员进行测试，非开发人员的原测试步骤是：
 
 手机外生成测试文件
-PC机上手动使用文件管理器将测试文件放">
+PC机上手动使用文件管理器将测试">
     
     
     
@@ -86,7 +87,7 @@ PC机上手动使用文件管理器将测试文件放">
     </p>
   <p class="article-time">
     <time datetime="2019-04-11T02:52:40.000Z" itemprop="datePublished">2019-04-11</time>
-    Updated:<time datetime="2019-04-11T03:04:07.850Z" itemprop="dateModified">2019-04-11</time>
+    Updated:<time datetime="2019-04-11T03:32:52.035Z" itemprop="dateModified">2019-04-11</time>
     
   </p>
 </header>
@@ -95,10 +96,11 @@ PC机上手动使用文件管理器将测试文件放">
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
-		<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#问题描述"><span class="toc-number">1.</span> <span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解决思路1：在应用有权限读写的目录中操作"><span class="toc-number">2.</span> <span class="toc-text">解决思路1：在应用有权限读写的目录中操作</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#方案优点："><span class="toc-number">2.1.</span> <span class="toc-text">方案优点：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#方案缺陷："><span class="toc-number">2.2.</span> <span class="toc-text">方案缺陷：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解决思路2：使用SAF操作文件"><span class="toc-number">3.</span> <span class="toc-text">解决思路2：使用SAF操作文件</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#方案优点：-1"><span class="toc-number">3.1.</span> <span class="toc-text">方案优点：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#方案缺陷：-1"><span class="toc-number">3.2.</span> <span class="toc-text">方案缺陷：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解决思路3：利用SAF获取到的URI"><span class="toc-number">4.</span> <span class="toc-text">解决思路3：利用SAF获取到的URI</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#方案优点：-2"><span class="toc-number">4.1.</span> <span class="toc-text">方案优点：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#方案缺点："><span class="toc-number">4.2.</span> <span class="toc-text">方案缺点：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解决思路4：使用SAF文件树"><span class="toc-number">5.</span> <span class="toc-text">解决思路4：使用SAF文件树</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#方案优点：-3"><span class="toc-number">5.1.</span> <span class="toc-text">方案优点：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#方案缺点：-1"><span class="toc-number">5.2.</span> <span class="toc-text">方案缺点：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解决思路5：使用媒体库"><span class="toc-number">6.</span> <span class="toc-text">解决思路5：使用媒体库</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#方案优点：-4"><span class="toc-number">6.1.</span> <span class="toc-text">方案优点：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#方案缺点：-2"><span class="toc-number">6.2.</span> <span class="toc-text">方案缺点：</span></a></li></ol></li></ol>
+		
 		</div>
 		
-		<h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>AndroidQ限制应用只能访问自己私有存储空间和其他应用设置为共享的文件。在之前的版本，国内手机的SDcard还是处在可以随意访问的状态。因此我遇到了如下问题：</p>
+		<p>##问题描述</p>
+<p>AndroidQ限制应用只能访问自己私有存储空间和其他应用设置为共享的文件。在之前的版本，国内手机的SDcard还是处在可以随意访问的状态。因此我遇到了如下问题：</p>
 <p>我维护的模块需要支持非开发人员进行测试，非开发人员的原测试步骤是：</p>
 <ul>
 <li>手机外生成测试文件</li>
@@ -107,61 +109,76 @@ PC机上手动使用文件管理器将测试文件放">
 <li>PC机上手动使用文件管理器取出结果文件</li>
 </ul>
 <p>而在AndroidQ上，这个步骤完全无法实现。</p>
-<h4 id="解决思路1：在应用有权限读写的目录中操作"><a href="#解决思路1：在应用有权限读写的目录中操作" class="headerlink" title="解决思路1：在应用有权限读写的目录中操作"></a>解决思路1：在应用有权限读写的目录中操作</h4><blockquote>
+<p>##解决思路1：在应用有权限读写的目录中操作</p>
+<blockquote>
 <p>在外部存储设备中存储文件的最佳位置是 <code>Context.getExternalFilesDir()</code> 返回的位置，因为此位置的行为方式在所有 Android 版本中都保持一致。使用此方法时，请在媒体环境中传递与您要创建或打开的文件类型对应的文件。例如，要访问或保存应用私有图片，请调用 <code>Context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)</code>。</p>
 </blockquote>
-<p>根据<a href="https://developer.android.google.cn/preview/privacy/scoped-storage中的提示，可以了解，需要测试人员手动将测试文件放在/storage/emulated/0/Android/data/[packagename]/files/Documents这个目录下才行。同时结果文件也在这里生成。经测试可正确读取。" target="_blank" rel="noopener">https://developer.android.google.cn/preview/privacy/scoped-storage中的提示，可以了解，需要测试人员手动将测试文件放在/storage/emulated/0/Android/data/[packagename]/files/Documents这个目录下才行。同时结果文件也在这里生成。经测试可正确读取。</a></p>
-<h5 id="方案优点："><a href="#方案优点：" class="headerlink" title="方案优点："></a>方案优点：</h5><ul>
+<p>根据<a href="https://developer.android.google.cn/preview/privacy/scoped-storage" target="_blank" rel="noopener">Android官方说明文档</a>中的提示，可以了解，需要测试人员手动将测试文件放在/storage/emulated/0/Android/data/[packagename]/files/Documents这个目录下才行。同时结果文件也在这里生成。经测试可正确读取。</p>
+<p>###方案优点：</p>
+<ul>
 <li>代码改动少。</li>
 </ul>
-<h5 id="方案缺陷："><a href="#方案缺陷：" class="headerlink" title="方案缺陷："></a>方案缺陷：</h5><ul>
+<p>###方案缺陷：</p>
+<ul>
 <li>路径太长了，操作一次找半天。如果碰到无法自动刷新，必须重启才能显示最新结果文件的管理器，测一次感觉会疯。</li>
 </ul>
-<h4 id="解决思路2：使用SAF操作文件"><a href="#解决思路2：使用SAF操作文件" class="headerlink" title="解决思路2：使用SAF操作文件"></a>解决思路2：使用SAF操作文件</h4><p>Android很早就提供了存储访问框架（<a href="https://developer.android.com/guide/topics/providers/document-provider?hl=zh-cn），不过因为一直有方法很方便任意访问SDcard，应该很少有使用这个框架的。这个框架接管了对存储卡的读写，通过唤起系统提供的UI界面让用户自己而非应用程序来查看、生成并选择文件，而应用程序只能通过回调获得文件URI并访问。" target="_blank" rel="noopener">https://developer.android.com/guide/topics/providers/document-provider?hl=zh-cn），不过因为一直有方法很方便任意访问SDcard，应该很少有使用这个框架的。这个框架接管了对存储卡的读写，通过唤起系统提供的UI界面让用户自己而非应用程序来查看、生成并选择文件，而应用程序只能通过回调获得文件URI并访问。</a></p>
-<h5 id="方案优点：-1"><a href="#方案优点：-1" class="headerlink" title="方案优点："></a>方案优点：</h5><ul>
+<p>##解决思路2：使用SAF操作文件</p>
+<p>Android很早就提供了<a href="https://developer.android.com/guide/topics/providers/document-provider?hl=zh-cn" target="_blank" rel="noopener">存储访问框架</a>，不过因为一直有方法很方便任意访问SDcard，应该很少有使用这个框架的。这个框架接管了对存储卡的读写，通过唤起系统提供的UI界面让用户自己而非应用程序来查看、生成并选择文件，而应用程序只能通过回调获得文件URI并访问。</p>
+<p>###方案优点：</p>
+<ul>
 <li>可继续将测试文件放在SDcard根目录、结果文件保存在根目录。</li>
 </ul>
-<h5 id="方案缺陷：-1"><a href="#方案缺陷：-1" class="headerlink" title="方案缺陷："></a>方案缺陷：</h5><ul>
+<p>###方案缺陷：</p>
+<ul>
 <li>平白多了很多界面交互操作。而且没有更改系统UI的地方，想在弹出系统界面的地方添加操作提示都不行。</li>
 <li>无法直接定位or特别展示指定文件，需要滑动界面、甚至点击切换TAB自己找。</li>
 <li>在生成结果文件的时候，如果简单地使用SAF提供的生成方法，则会在已有结果文件的时候，自动在文件名后加(1)(2)(3)这种标记，没法设定覆盖已有结果文件，而这和之前的行为不一致(原本是覆盖原有文件)，容易产生迷惑。但现在因为无法随意访问SDcard，SAF也没有提供相关方法，没有办法可以判断文件是否已存在，除非再增加一堆交互。</li>
 </ul>
-<h4 id="解决思路3：利用SAF获取到的URI"><a href="#解决思路3：利用SAF获取到的URI" class="headerlink" title="解决思路3：利用SAF获取到的URI"></a>解决思路3：利用SAF获取到的URI</h4><p>利用SAF读取文件，实质上是操作与绝对路径无关的文件URI，而这个URI只能在用户在系统SAF的UI中操作回调后才能获得。然而使用Pixel上测试，这个返回的URI还是有些规律的。”sdcard/A.txt”返回的URI为content://com.android.externalstorage.documents/document/primary%3AA.txt。也就是SDcard根路径的URI为content://com.android.externalstorage.documents/document/primary%3A。经测试，直接将需要的文件名接在此SDcard根路径后面，并正确构造Uri，可无需系统UI，直接访问SDcard根路径下的文件。构造Uri示例如下：</p>
+<p>##解决思路3：利用SAF获取到的URI</p>
+<p>利用SAF读取文件，实质上是操作与绝对路径无关的文件URI，而这个URI只能在用户在系统SAF的UI中操作回调后才能获得。然而使用Pixel上测试，这个返回的URI还是有些规律的。”sdcard/A.txt”返回的URI为content://com.android.externalstorage.documents/document/primary%3AA.txt。也就是SDcard根路径的URI为content://com.android.externalstorage.documents/document/primary%3A。经测试，直接将需要的文件名接在此SDcard根路径后面，并正确构造Uri，可无需系统UI，直接访问SDcard根路径下的文件。构造Uri示例如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Uri uri = <span class="keyword">new</span> Uri.Builder().scheme(<span class="string">"content"</span>).authority(<span class="string">"com.android.externalstorage.documents"</span>).path(<span class="string">"document/primary:A.txt"</span>).build();</span><br></pre></td></tr></table></figure>
 <p>使用URI获取文件代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">InputStream fileStream = getContentResolver().openInputStream(uri);</span><br></pre></td></tr></table></figure>
-<h5 id="方案优点：-2"><a href="#方案优点：-2" class="headerlink" title="方案优点："></a>方案优点：</h5><ul>
+<p>###方案优点：</p>
+<ul>
 <li>代码改动小，可继续将测试文件放置在SDcard根目录。</li>
 </ul>
-<h5 id="方案缺点："><a href="#方案缺点：" class="headerlink" title="方案缺点："></a>方案缺点：</h5><ul>
+<p>###方案缺点：</p>
+<ul>
 <li>使用硬编码URI，这个值非常可能随机型或相关安全策略而变化。</li>
 <li>无法处理需要生成新文件的情况。有文件才有Uri，没有文件光有Uri没用。</li>
 </ul>
-<h4 id="解决思路4：使用SAF文件树"><a href="#解决思路4：使用SAF文件树" class="headerlink" title="解决思路4：使用SAF文件树"></a>解决思路4：使用SAF文件树</h4><p>自Android5.0开始，系统提供了通过SAF获取整个文件夹读写权限的方法。这种方法虽然还是需要拉起系统UI，但获得权限后，就可以无界面读写文件了，减少了很多交互。拉起系统UI打开文件树方法：</p>
+<p>##解决思路4：使用SAF文件树</p>
+<p>自Android5.0开始，系统提供了通过SAF获取整个文件夹读写权限的方法。这种方法虽然还是需要拉起系统UI，但获得权限后，就可以无界面读写文件了，减少了很多交互。拉起系统UI打开文件树方法：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);</span><br><span class="line">startActivityForResult(intent, TREE_REQUEST_CODE);</span><br></pre></td></tr></table></figure>
 <p>UI出现后，会有按钮提示”ALLOW ACCESS TO xxxx”，点击后会有系统弹窗询问是否要允许，点击确定即可。在Activity返回后，在onActivityResult中申请永久权限：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Uri uri = intent.getData();</span><br><span class="line"><span class="keyword">final</span> <span class="keyword">int</span> takeFlags = intent.getFlags()</span><br><span class="line">        &amp; (Intent.FLAG_GRANT_READ_URI_PERMISSION</span><br><span class="line">        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);</span><br><span class="line">getContentResolver().takePersistableUriPermission(uri, takeFlags);</span><br></pre></td></tr></table></figure>
 <p>然后获取对应此目录的DocumentFile，之后即可通过DocumentFile操作文件：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DocumentFile root = DocumentFile.fromTreeUri(<span class="keyword">this</span>, uri);</span><br></pre></td></tr></table></figure>
 <p>获得目录DocumentFile后，可以保存，下次就不需要再弹界面了。同时可以在拉起系统UI前做好权限授予提示。</p>
-<h5 id="方案优点：-3"><a href="#方案优点：-3" class="headerlink" title="方案优点："></a>方案优点：</h5><ul>
+<p>###方案优点：</p>
+<ul>
 <li>可以继续在SDcard根目录操作文件。</li>
 <li>交互比之前的方法少很多。</li>
 </ul>
-<h5 id="方案缺点：-1"><a href="#方案缺点：-1" class="headerlink" title="方案缺点："></a>方案缺点：</h5><ul>
+<p>###方案缺点：</p>
+<ul>
 <li>需要做好提示工作。</li>
 <li>不同机型对这个功能的支持可能不同。比如在Pixel2上可以正常访问SDcard，但华为mate9上就无法访问。</li>
 </ul>
-<h4 id="解决思路5：使用媒体库"><a href="#解决思路5：使用媒体库" class="headerlink" title="解决思路5：使用媒体库"></a>解决思路5：使用媒体库</h4><p>AndroidQ推荐使用媒体库进行文件共享。然而对于当前场景，媒体库主要的问题是：</p>
+<p>##解决思路5：使用媒体库</p>
+<p>AndroidQ推荐使用媒体库进行文件共享。然而对于当前场景，媒体库主要的问题是：</p>
 <ul>
 <li>可以读取的文件必须用代码指定加入媒体库。未如此操作，经测试，哪怕手动将文件放入媒体库文件夹，重启强制刷新媒体库，也无法在媒体库找到此文件。</li>
 </ul>
 <p>如果手动添加文件不行，那么如果先在媒体库生成空白测试文件，然后再手动替换成手机外生成的同名测试文件是否可以呢？经测试，生成空白文件后，直接替换，可成功通过媒体库读到新的内容。但如果先删除再替换，则就无法再读到此文件。</p>
-<h5 id="方案优点：-4"><a href="#方案优点：-4" class="headerlink" title="方案优点："></a>方案优点：</h5><ul>
+<p>###方案优点：</p>
+<ul>
 <li>交互操作少。</li>
 <li>文件操作路径相对短（Pixel2测试为SDcard/Download）。</li>
 </ul>
-<h5 id="方案缺点：-2"><a href="#方案缺点：-2" class="headerlink" title="方案缺点："></a>方案缺点：</h5><ul>
+<p>###方案缺点：</p>
+<ul>
 <li>虽然路径短，但还是无法在SDcard根目录操作文件。</li>
 <li>如果误删除测试文件，就比较麻烦。</li>
 <li>没有打印媒体库路径的API。在Pixel2上手动搜索找到了生成的文件在SDcard/Download，并不代表所有手机都是这个路径。其实就是文件路径无法确定。</li>
@@ -209,7 +226,7 @@ PC机上手动使用文件管理器将测试文件放">
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
-  <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#问题描述"><span class="toc-number">1.</span> <span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解决思路1：在应用有权限读写的目录中操作"><span class="toc-number">2.</span> <span class="toc-text">解决思路1：在应用有权限读写的目录中操作</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#方案优点："><span class="toc-number">2.1.</span> <span class="toc-text">方案优点：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#方案缺陷："><span class="toc-number">2.2.</span> <span class="toc-text">方案缺陷：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解决思路2：使用SAF操作文件"><span class="toc-number">3.</span> <span class="toc-text">解决思路2：使用SAF操作文件</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#方案优点：-1"><span class="toc-number">3.1.</span> <span class="toc-text">方案优点：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#方案缺陷：-1"><span class="toc-number">3.2.</span> <span class="toc-text">方案缺陷：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解决思路3：利用SAF获取到的URI"><span class="toc-number">4.</span> <span class="toc-text">解决思路3：利用SAF获取到的URI</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#方案优点：-2"><span class="toc-number">4.1.</span> <span class="toc-text">方案优点：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#方案缺点："><span class="toc-number">4.2.</span> <span class="toc-text">方案缺点：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解决思路4：使用SAF文件树"><span class="toc-number">5.</span> <span class="toc-text">解决思路4：使用SAF文件树</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#方案优点：-3"><span class="toc-number">5.1.</span> <span class="toc-text">方案优点：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#方案缺点：-1"><span class="toc-number">5.2.</span> <span class="toc-text">方案缺点：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解决思路5：使用媒体库"><span class="toc-number">6.</span> <span class="toc-text">解决思路5：使用媒体库</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#方案优点：-4"><span class="toc-number">6.1.</span> <span class="toc-text">方案优点：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#方案缺点：-2"><span class="toc-number">6.2.</span> <span class="toc-text">方案缺点：</span></a></li></ol></li></ol>
+  
   </div>
 
 <div id="asidepart">
